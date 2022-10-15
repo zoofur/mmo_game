@@ -1,0 +1,62 @@
+Initialize engine version: 5.4.1f1 (649f48bbbf0f)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 1660 Ti (ID=0x2191)
+    Vendor:   NVIDIA
+    VRAM:     3072 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: A:\goworkstation\mmo_game\client\client_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading A:\goworkstation\mmo_game\client\client_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: A:\goworkstation\mmo_game\client\client_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading A:\goworkstation\mmo_game\client\client_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: A:\goworkstation\mmo_game\client\client_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading A:\goworkstation\mmo_game\client\client_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: A:\goworkstation\mmo_game\client\client_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading A:\goworkstation\mmo_game\client\client_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: A:\goworkstation\mmo_game\client\client_Data\Managed\Google.Protobuf.dll (this message is harmless)
+Loading A:\goworkstation\mmo_game\client\client_Data\Managed\Google.Protobuf.dll into Unity Child Domain
+Platform assembly: A:\goworkstation\mmo_game\client\client_Data\Managed\protobuf-net.dll (this message is harmless)
+Loading A:\goworkstation\mmo_game\client\client_Data\Managed\protobuf-net.dll into Unity Child Domain
+- Completed reload, in  0.120 seconds
+Platform assembly: A:\goworkstation\mmo_game\client\client_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: A:\goworkstation\mmo_game\client\client_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 144Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 0.842100 ms
+Setting up 3 worker threads for Enlighten.
+  Thread -> id: c0ec -> priority: 1 
+  Thread -> id: f4b8 -> priority: 1 
+  Thread -> id: cc14 -> priority: 1 
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 4.012500 ms
+
+Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 368.
+Total: 0.547000 ms (FindLiveObjects: 0.052500 ms CreateObjectMapping: 0.015800 ms MarkObjects: 0.240200 ms  DeleteObjects: 0.237400 ms)
+
+Parent of RectTransform is being set with parent property. Consider using the SetParent method instead, with the worldPositionStays argument set to false. This will retain local orientation and scale rather than world orientation and scale, which can prevent common UI scaling issues.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+Connect: 127.0.0.1:9090
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+Connect Suc
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+PlayerController singleton already created!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+Player: { "pid": 1 }
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+Start Game
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
