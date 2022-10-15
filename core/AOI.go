@@ -40,13 +40,13 @@ func NewAOIMgr(minX, maxX, cntsX, maxY, minY, cntsY int) *AOIManager {
 		for x := 0; x < cntsX; x++ {
 			gid := y*cntsX + x
 
-			aoi.Grids[gid] = &Grid{
-				GID:  gid,
-				MinX: aoi.MinX + x*aoi.gridWidth(),
-				MaxX: aoi.MinX + (x+1)*aoi.gridWidth(),
-				MinY: aoi.MinY + y*aoi.gridLength(),
-				MaxY: aoi.MinY + (y+1)*aoi.gridLength(),
-			}
+			aoi.Grids[gid] = NewGrid(
+				gid,
+				aoi.MinX+x*aoi.gridWidth(),
+				aoi.MinX+(x+1)*aoi.gridWidth(),
+				aoi.MinY+y*aoi.gridLength(),
+				aoi.MinY+(y+1)*aoi.gridLength(),
+			)
 		}
 	}
 

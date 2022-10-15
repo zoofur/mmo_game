@@ -94,3 +94,18 @@ func (p *Player) BroadCastStartPosition() {
 
 	p.SendMsg(200, msg)
 }
+
+// 世界聊天广播
+func (p *Player) Talk(content string) {
+	msg := &pb.BroadCast{
+		Pid: p.Pid,
+		Tp:  1,
+		Data: &pb.BroadCast_Content{
+			Content: content,
+		},
+	}
+	players := WorldMgr.GetAllPlayers()
+	for _, v := range players {
+		v.SendMsg(200, msg)
+	}
+}
