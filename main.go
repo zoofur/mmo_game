@@ -20,6 +20,8 @@ func OnConnCreate(conn ziface.IConnection) {
 	player.SyncPid()
 	// 向客户端发送MsgID = 200， 同步玩家位置
 	player.BroadCastStartPosition()
+	// 将当前新上线玩家添加到世界中
+	core.WorldMgr.AddPlayer(player)
 
 	fmt.Println("Player ID: ", player.Pid, " is arrived")
 }

@@ -4,6 +4,9 @@ import (
 	"fmt"
 )
 
+/*
+	AOI算法管理模块
+*/
 type AOIManager struct {
 	// 区域左边界坐标
 	MinX int

@@ -5,6 +5,9 @@ import (
 	"sync"
 )
 
+/*
+	游戏格子
+*/
 type Grid struct {
 	// 格子ID
 	GID int

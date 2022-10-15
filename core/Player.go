@@ -9,6 +9,9 @@ import (
 	"sync"
 )
 
+/*
+	玩家管理模块
+*/
 type Player struct {
 	// 玩家ID
 	Pid int32
