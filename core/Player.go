@@ -109,3 +109,47 @@ func (p *Player) Talk(content string) {
 		v.SendMsg(200, msg)
 	}
 }
+
+// 同步自己和其他玩家的位置信息
+func (p *Player) SyncSurroundPlayer() {
+	// 获取周围玩家
+	pids := WorldMgr.AoiMgr.GetPidsByPos(p.X, p.Z)
+	players := make([]*Player, 0, len(pids))
+	for _, v := range pids {
+		players = append(players, WorldMgr.Players[int32(v)])
+	}
+	// 向其他玩家发送自己的位置，让其他玩家看到自己
+	toOthers_msg := &pb.BroadCast{
+		Pid: p.Pid,
+		Tp:  2,
+		Data: &pb.BroadCast_P{
+			P: &pb.Position{
+				X: p.X,
+				Y: p.Y,
+				Z: p.Z,
+				V: p.V,
+			},
+		},
+	}
+	for _, v := range players {
+		v.SendMsg(200, toOthers_msg)
+	}
+	// 获取其他玩家的位置,让自己看到其他玩家
+	players_msg := make([]*pb.Player, 0, len(players))
+	for _, v := range players {
+		msg := &pb.Player{
+			Pid: v.Pid,
+			P: &pb.Position{
+				X: v.X,
+				Y: v.Y,
+				Z: v.Z,
+				V: v.V,
+			},
+		}
+		players_msg = append(players_msg, msg)
+	}
+	syncPlayers_msg := &pb.SyncPlayers{
+		Ps: players_msg,
+	}
+	p.SendMsg(202, syncPlayers_msg)
+}

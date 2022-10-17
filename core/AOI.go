@@ -121,8 +121,10 @@ func (a *AOIManager) GetPidsByPos(x, y float32) (players []int) {
 	gridID := a.GetGidByPos(x, y)
 	grids := a.GetSurroundGrid(gridID)
 
-	for _, v := range grids {
-		players = append(players, v.GID)
+	for _, g := range grids {
+		for p, _ := range g.players {
+			players = append(players, p)
+		}
 	}
 	fmt.Printf("x : %v, y: %v, surround players: %v\n", x, y, players)
 

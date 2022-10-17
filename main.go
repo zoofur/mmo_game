@@ -28,6 +28,8 @@ func OnConnCreate(conn ziface.IConnection) {
 	core.WorldMgr.AddPlayer(player)
 	// 向conn中添加属性pid，来提供给WorldChat获取
 	conn.SetProperty("pid", player.Pid)
+	// 同步玩家位置信息
+	player.SyncSurroundPlayer()
 
 	fmt.Println("Player ID: ", player.Pid, " is arrived")
 }
