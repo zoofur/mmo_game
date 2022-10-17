@@ -14,6 +14,7 @@ func main() {
 	s.SetOnConnCreate(OnConnCreate)
 	// 注册处理函数
 	s.AddRouter(2, &apis.WorldChat{})
+	s.AddRouter(3, &apis.MoveApi{})
 	s.Serve()
 }
 

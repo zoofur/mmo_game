@@ -153,3 +153,40 @@ func (p *Player) SyncSurroundPlayer() {
 	}
 	p.SendMsg(202, syncPlayers_msg)
 }
+
+func (p *Player) UpdatePos(x, y, z, v float32) {
+	// 更新坐标
+	p.X = x
+	p.Y = y
+	p.Z = z
+	p.V = v
+
+	msg := &pb.BroadCast{
+		Pid: p.Pid,
+		Tp:  4,
+		Data: &pb.BroadCast_P{
+			P: &pb.Position{
+				X: x,
+				Y: y,
+				Z: z,
+				V: v,
+			},
+		},
+	}
+	// 向AOI范围的玩家发送位置更新后的坐标
+	players := p.getSurroundPlayer()
+	for _, v := range players {
+		v.SendMsg(200, msg)
+	}
+}
+
+// 获取当前玩家的AOI玩家信息
+func (p *Player) getSurroundPlayer() []*Player {
+	pids := WorldMgr.AoiMgr.GetPidsByPos(p.X, p.Z)
+	players := make([]*Player, 0, len(pids))
+
+	for _, v := range pids {
+		players = append(players, WorldMgr.Players[int32(v)])
+	}
+	return players
+}
