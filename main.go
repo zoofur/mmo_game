@@ -11,14 +11,15 @@ import (
 func main() {
 	s := znet.NewServer()
 	// 注册钩子函数
-	s.SetOnConnCreate(OnConnCreate)
+	s.SetOnConnCreate(onConnCreate)
+	s.SetOnConnDestroy(onConnDestroy)
 	// 注册处理函数
 	s.AddRouter(2, &apis.WorldChat{})
 	s.AddRouter(3, &apis.MoveApi{})
 	s.Serve()
 }
 
-func OnConnCreate(conn ziface.IConnection) {
+func onConnCreate(conn ziface.IConnection) {
 	// 初始化玩家
 	player := core.NewPlayer(conn)
 	// 向客户端发送MsgID = 1， 同步玩家ID
@@ -33,4 +34,16 @@ func OnConnCreate(conn ziface.IConnection) {
 	player.SyncSurroundPlayer()
 
 	fmt.Println("Player ID: ", player.Pid, " is arrived")
+}
+
+func onConnDestroy(conn ziface.IConnection) {
+	pid, err := conn.GetProperty("pid")
+	if err != nil {
+		fmt.Println("conn GetProperty err: ", err)
+		return
+	}
+
+	player := core.WorldMgr.Players[pid.(int32)]
+	player.Offline()
+	fmt.Println("Player ID: ", player.Pid, " is offline")
 }

@@ -190,3 +190,17 @@ func (p *Player) getSurroundPlayer() []*Player {
 	}
 	return players
 }
+
+// 玩家下线后的操作
+func (p *Player) Offline() {
+	players := p.getSurroundPlayer()
+	msg := &pb.SyncPid{
+		Pid: p.Pid,
+	}
+	for _, v := range players {
+		v.SendMsg(201, msg)
+	}
+
+	WorldMgr.AoiMgr.RemovePidFromGridByPos(p.X, p.Z, int(p.Pid))
+	WorldMgr.RemovePlayerByPid(p.Pid)
+}
