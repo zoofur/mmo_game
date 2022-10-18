@@ -204,3 +204,83 @@ func (p *Player) Offline() {
 	WorldMgr.AoiMgr.RemovePidFromGridByPos(p.X, p.Z, int(p.Pid))
 	WorldMgr.RemovePlayerByPid(p.Pid)
 }
+
+// 玩家移动出当前九宫格需要让玩家消失在视野中
+func (p *Player) UpdateAOI(x, y, z, v float32) {
+	// 是否跨越格子
+	oldGid := WorldMgr.AoiMgr.GetGidByPos(p.X, p.Z)
+	newGid := WorldMgr.AoiMgr.GetGidByPos(x, z)
+	if oldGid == newGid {
+		return
+	}
+
+	// 比较新旧九宫格
+	oldGrids := WorldMgr.AoiMgr.GetSurroundGrid(oldGid)
+	newGrids := WorldMgr.AoiMgr.GetSurroundGrid(newGid)
+	sameGrids := make(map[int]struct{})
+	for _, o := range oldGrids {
+		for _, n := range newGrids {
+			if o.GID == n.GID {
+				sameGrids[o.GID] = struct{}{}
+			}
+		}
+	}
+
+	// 处理玩家之间的可见
+	disappear_msg := &pb.SyncPid{
+		Pid: p.Pid,
+	}
+	for _, o := range oldGrids {
+		if _, ok := sameGrids[o.GID]; !ok {
+			pids := WorldMgr.AoiMgr.Grids[o.GID].GetAllPlayersFromGrid()
+			for _, v := range pids {
+				// 让当前玩家消息在其他玩家的视野中
+				player := WorldMgr.GetPlayerByPid(int32(v))
+				player.SendMsg(201, disappear_msg)
+				// 让其他玩家消失在当前玩家的视野中
+				otherDisappear_msg := &pb.SyncPid{
+					Pid: player.Pid,
+				}
+				p.SendMsg(201, otherDisappear_msg)
+			}
+			fmt.Printf("user pid: %d disappear from Grid: %d\n", p.Pid, o.GID)
+		}
+	}
+
+	appear_msg := &pb.BroadCast{
+		Pid: p.Pid,
+		Tp:  2,
+		Data: &pb.BroadCast_P{
+			P: &pb.Position{
+				X: x,
+				Y: y,
+				Z: z,
+				V: v,
+			},
+		},
+	}
+	for _, n := range newGrids {
+		if _, ok := sameGrids[n.GID]; !ok {
+			pids := WorldMgr.AoiMgr.Grids[n.GID].GetAllPlayersFromGrid()
+			for _, v := range pids {
+				player := WorldMgr.GetPlayerByPid(int32(v))
+				player.SendMsg(200, appear_msg)
+
+				otherAppear_msg := &pb.BroadCast{
+					Pid: player.Pid,
+					Tp:  2,
+					Data: &pb.BroadCast_P{
+						P: &pb.Position{
+							X: player.X,
+							Y: player.Y,
+							Z: player.Z,
+							V: player.V,
+						},
+					},
+				}
+				p.SendMsg(200, otherAppear_msg)
+			}
+			fmt.Printf("user pid: %d come to Grid: %d\n", p.Pid, n.GID)
+		}
+	}
+}

@@ -74,7 +74,7 @@ func (a *AOIManager) String() string {
 	return s
 }
 
-// 获取9宫格
+// 获取九宫格
 func (a *AOIManager) GetSurroundGrid(gridID int) (grids []*Grid) {
 	// 不存在当前格子，就直接退出
 	if _, ok := a.Grids[gridID]; !ok {

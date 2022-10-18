@@ -32,5 +32,6 @@ func (m *MoveApi) Handle(request ziface.IRequest) {
 	}
 	fmt.Printf("user pid: %d, x: %f, y: %f, z: %f, v:%f\n", pid, pos.X, pos.Y, pos.Z, pos.V)
 	player := core.WorldMgr.Players[pid.(int32)]
+	player.UpdateAOI(pos.X, pos.Y, pos.Z, pos.V)
 	player.UpdatePos(pos.X, pos.Y, pos.Z, pos.V)
 }
