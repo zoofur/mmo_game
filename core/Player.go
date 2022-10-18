@@ -247,7 +247,7 @@ func (p *Player) UpdateAOI(x, y, z, v float32) {
 				}
 				p.SendMsg(201, otherDisappear_msg)
 			}
-			fmt.Printf("######## user pid: %d disappear from Grid: %d\n", p.Pid, o.GID)
+			fmt.Printf("user pid: %d disappear from Grid: %d\n", p.Pid, o.GID)
 		}
 	}
 
@@ -283,7 +283,7 @@ func (p *Player) UpdateAOI(x, y, z, v float32) {
 				}
 				otherAppear_msg = append(otherAppear_msg, other)
 			}
-			fmt.Printf("######## user pid: %d come to Grid: %d\n", p.Pid, n.GID)
+			fmt.Printf("user pid: %d come to Grid: %d\n", p.Pid, n.GID)
 		}
 	}
 	// 让其他玩家出现在当前玩家视野中
