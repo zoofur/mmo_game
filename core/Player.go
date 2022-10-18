@@ -214,6 +214,10 @@ func (p *Player) UpdateAOI(x, y, z, v float32) {
 		return
 	}
 
+	// 移除旧格子中的玩家，添加到新格子中
+	WorldMgr.AoiMgr.Grids[oldGid].Remove(int(p.Pid))
+	WorldMgr.AoiMgr.Grids[newGid].Add(int(p.Pid))
+
 	// 比较新旧九宫格
 	oldGrids := WorldMgr.AoiMgr.GetSurroundGrid(oldGid)
 	newGrids := WorldMgr.AoiMgr.GetSurroundGrid(newGid)
@@ -243,7 +247,7 @@ func (p *Player) UpdateAOI(x, y, z, v float32) {
 				}
 				p.SendMsg(201, otherDisappear_msg)
 			}
-			fmt.Printf("user pid: %d disappear from Grid: %d\n", p.Pid, o.GID)
+			fmt.Printf("######## user pid: %d disappear from Grid: %d\n", p.Pid, o.GID)
 		}
 	}
 
@@ -259,28 +263,32 @@ func (p *Player) UpdateAOI(x, y, z, v float32) {
 			},
 		},
 	}
+	otherAppear_msg := make([]*pb.Player, 0)
 	for _, n := range newGrids {
 		if _, ok := sameGrids[n.GID]; !ok {
 			pids := WorldMgr.AoiMgr.Grids[n.GID].GetAllPlayersFromGrid()
 			for _, v := range pids {
+				// 让当前玩家出现在其他玩家视野中
 				player := WorldMgr.GetPlayerByPid(int32(v))
 				player.SendMsg(200, appear_msg)
 
-				otherAppear_msg := &pb.BroadCast{
+				other := &pb.Player{
 					Pid: player.Pid,
-					Tp:  2,
-					Data: &pb.BroadCast_P{
-						P: &pb.Position{
-							X: player.X,
-							Y: player.Y,
-							Z: player.Z,
-							V: player.V,
-						},
+					P: &pb.Position{
+						X: player.X,
+						Y: player.Y,
+						Z: player.Z,
+						V: player.V,
 					},
 				}
-				p.SendMsg(200, otherAppear_msg)
+				otherAppear_msg = append(otherAppear_msg, other)
 			}
-			fmt.Printf("user pid: %d come to Grid: %d\n", p.Pid, n.GID)
+			fmt.Printf("######## user pid: %d come to Grid: %d\n", p.Pid, n.GID)
 		}
 	}
+	// 让其他玩家出现在当前玩家视野中
+	msg := &pb.SyncPlayers{
+		Ps: otherAppear_msg,
+	}
+	p.SendMsg(202, msg)
 }
